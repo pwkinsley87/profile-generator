@@ -1,8 +1,9 @@
-const inquirer = require('inquirer');
+const inquirer = import('inquirer');
 const fs = require('fs');
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
+const { resolve } = require('path');
 
 const employees = [];
 
@@ -12,7 +13,7 @@ function startApp() {
 };
 
 function addMember() {
-    inquirer.prompt([{
+    inquirer.prompt({
         type: "input",
         message: "Please enter the new team member's name.",
         name: "name"
@@ -35,9 +36,9 @@ function addMember() {
     },
     {
         type: "input",
-        message: "Plesae enter the new team members' email address",
+        message: "Please enter the new team members' email address",
         name: "email"
-    }])
+    })
     .then(function({name, role, id, email}) {
         let roleInfo = "";
         if (role === "Engineer") {
@@ -46,7 +47,7 @@ function addMember() {
             roleInfo = "Office Number";
         } else {
             roleInfo = "University Name"
-        }inquirer.prompt([{
+        }inquirer.prompt({
             message: `Enter team members' ${roleInfo}`,
             name: "roleInfo"
         },
@@ -59,9 +60,9 @@ function addMember() {
             ],
             name: "anotherNewMember"
 
-        }])
+        })
         .then(function({roleInfo, anotherNewMember}) {
-            let anotherNewMember;
+            // let anotherNewMember;
             if (role === "Manager") {
                 anotherNewMember = new Manager(name, id, email, roleInfo);
             } else if (role === "Engineer") {
@@ -99,7 +100,7 @@ function startHTML() {
         </nav>
         <div class="container">
             <div class="row">`
-    fs.writeFile("./output/index.html", html, function(err) {
+    fs.writeFile("./output/index.html", HTML, function(err) {
         if (err) {
             console.log(err);
         }
@@ -152,14 +153,28 @@ function addHTML(anotherNewMember) {
             </div>
         </div>`;
         }
+        console.log("Adding new team member.");
+        fs.appendFile("./output/index.html", data, function (err) {
+            if (err) {
+                console.log(err);
+            };
+            return resolve();
+        });
+    });
+};
 
-    })
-}
+function endHTML() {
+    const HTML = ` </div>
+     </div>
+</body>
+</html> `;
 
-
-
-
-
-
+    fs.appendFile("./output/index.html", html, function (err) {
+        if (err) {
+            console.log(err);
+        };
+    });
+    console.log("It is done.")
+};
 
 startApp();
