@@ -9,19 +9,19 @@ test('Creates an Intern object.', () => {
 });
 
 test('gets Intern name', () => {
-    const intern = new Intern('Bunk', '5', 'bunkjohnson@gmail.com');
+    const intern = new Intern('Bunk', '5', 'bunkjohnson@gmail.com', 'TSU');
 
     expect(intern.getName()).toEqual(expect.any(String));
 })
 
 test('gets Intern email', () => {
-    const intern = new Intern('Bunk', '5', 'bunkjohnson@gmail.com');
+    const intern = new Intern('Bunk', '5', 'bunkjohnson@gmail.com', 'TSU');
 
     expect(intern.getEmail()).toEqual(expect.any(String));
 });
 
 test('gets Intern role', () => {
-    const intern = new Intern('Bunk', '5', 'bunkjohnson@gmail.com');
+    const intern = new Intern('Bunk', '5', 'bunkjohnson@gmail.com', 'TSU');
 
     expect(intern.getRole()).toEqual('Intern');
 });
