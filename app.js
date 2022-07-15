@@ -69,19 +69,8 @@ function addMember() {
         inquirer.prompt([{
             message: `Enter team members' ${roleInfo}`,
             name: "roleInfo"
-        },
-        {
-            type: "list",
-            message: "Would you like to add more new team members?",
-            choices: [
-                "yes",
-                "no"
-            ],
-            name: "anotherNewMember"
-
         }])
         .then(function({roleInfo, anotherNewMember}) {
-            // let anotherNewMember;
             if (role === "Manager") {
                 anotherNewMember = new Manager(name, id, email, roleInfo);
             } else if (role === "Engineer") {
@@ -89,18 +78,25 @@ function addMember() {
             } else {
                 anotherNewMember = new Intern(name, id, email, roleInfo);
             }
-            employees.push(anotherNewMember);
+            employees.push(anotherNewMember)
             addHTML(anotherNewMember)
-            .then(function() {
-                if (anotherNewMember === "yes") {
-                    addMember();
+            inquirer.prompt([{
+            type: "list",
+            message: "Would you like to add more new team members?",
+            name: "anotherNewMember",
+            choices: ["yes", "no"],
+            }])
+            .then(({ anotherNewMember }) => {
+                if(anotherNewMember === "yes") {
+                    return addMember();
                 } else {
-                    endHTML();
+                    return endHTML();
                 }
             });
         });
-    });    
+    })
 }
+  
 
 function startHTML() {
     const HTML = `<!DOCTYPE html>
@@ -109,13 +105,13 @@ function startHTML() {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         crossorigin="anonymous" link rel="stylesheet">
-        <title>Acme Inc. Team Profile</title>
+        <title>C&M Music Shop</title>
     </head>
     <body>
-        <nav class="navbar bg-dark">
-            <span class="navbar-brand mb-0 h1 w-100 text-center">Acme Inc. Team Profile</span>
+        <nav class="navbar bg-red color-white">
+            <span class="navbar-brand mb-0 h1 w-100 text-center">C&M Music Shop - Rampart Street - New Orleans</span>
         </nav>
         <div class="container">
             <div class="row">`
@@ -124,7 +120,7 @@ function startHTML() {
             console.log(err);
         }
     });
-    console.log("and so it begins");
+    console.log("And So It Begins.");
 }
 
 function addHTML(anotherNewMember) {
@@ -188,7 +184,7 @@ function endHTML() {
 </body>
 </html> `;
 
-    fs.appendFile("./output/index.html", html, function (err) {
+    fs.appendFile("./output/index.html", HTML, function (err) {
         if (err) {
             console.log(err);
         };
