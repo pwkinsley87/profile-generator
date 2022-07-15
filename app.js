@@ -1,4 +1,4 @@
-const inquirer = import('inquirer');
+const inquirer = require('inquirer');
 const fs = require('fs');
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
@@ -9,11 +9,29 @@ const employees = [];
 
 function startApp() {
     startHTML();
-    addMember();
-};
+    selectTask();
+}
+
+function selectTask() {
+    inquirer.prompt([{
+        type: "list",
+        message: "Select which task you would like to perform",
+        name: 'task',
+        choices: ["Add a Team Member", "Quit"]
+        }])
+        .then(({ task }) => {
+            if(task === "Add a Team Member") {
+                return addMember();
+            } else {
+                return endHTML();
+            }
+        })    
+
+};  
+    
 
 function addMember() {
-    inquirer.prompt({
+    inquirer.prompt([{
         type: "input",
         message: "Please enter the new team member's name.",
         name: "name"
@@ -22,9 +40,9 @@ function addMember() {
         type: "list",
         message: "Please select the new team member's role",
         choices: [
-                    "Manager",
-                    "Engineer",
-                    "Intern"
+            "Manager",
+            "Engineer",
+            "Intern"
         ],
         name: "role"
     },
@@ -38,7 +56,7 @@ function addMember() {
         type: "input",
         message: "Please enter the new team members' email address",
         name: "email"
-    })
+    }])
     .then(function({name, role, id, email}) {
         let roleInfo = "";
         if (role === "Engineer") {
@@ -47,7 +65,8 @@ function addMember() {
             roleInfo = "Office Number";
         } else {
             roleInfo = "University Name"
-        }inquirer.prompt({
+        }
+        inquirer.prompt([{
             message: `Enter team members' ${roleInfo}`,
             name: "roleInfo"
         },
@@ -60,7 +79,7 @@ function addMember() {
             ],
             name: "anotherNewMember"
 
-        })
+        }])
         .then(function({roleInfo, anotherNewMember}) {
             // let anotherNewMember;
             if (role === "Manager") {
@@ -81,7 +100,7 @@ function addMember() {
             });
         });
     });    
-};
+}
 
 function startHTML() {
     const HTML = `<!DOCTYPE html>
